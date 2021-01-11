@@ -1,26 +1,3 @@
-# ps4-remote-control
-Java library for remote controlling a PS4 with the DDP and Companion app protocols.
-
-[![Release](https://jitpack.io/v/BenjaminFaal/ps4-remote-control.svg)](https://jitpack.io/#BenjaminFaal/ps4-remote-control)
-## Maven
-```xml
-<repositories>
-    <repository>
-        <id>jitpack.io</id>
-        <url>https://jitpack.io</url>
-    </repository>
-</repositories>
-
-<dependency>
-	<groupId>com.github.BenjaminFaal</groupId>
-	<artifactId>ps4-remote-control</artifactId>
-	<version>0.0.1</version>
-</dependency>
-```
-
-## Usage
-
-```java
 import com.benjaminfaal.ps4remotecontrol.companionapp.PS4CompanionAppConnection;
 import com.benjaminfaal.ps4remotecontrol.companionapp.packet.request.RemoteControlRequest;
 import com.benjaminfaal.ps4remotecontrol.companionapp.packet.response.LoginResponse;
@@ -42,11 +19,14 @@ public class PS4RemoteControlTest {
         PS4DDP.wakeUp(host, credential);
         PS4DDP.launch(host, credential);
 
+        // connect
         PS4CompanionAppConnection connection = new PS4CompanionAppConnection(host, credential);
         connection.connect();
 
+        // login
         LoginResponse loginResponse = connection.login("12345678", "", "App label here", "Device name here");
         if (loginResponse.isSuccess()) {
+            // remote control
             connection.startTitle("CUSA00001");
             connection.remoteControl(RemoteControlRequest.Operation.UP, 0);
         }
@@ -55,4 +35,3 @@ public class PS4RemoteControlTest {
     }
 
 }
-```
