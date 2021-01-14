@@ -85,6 +85,14 @@ public class PS4DDP {
         send(host, formatAuthenticatedRequest(MessageType.LAUNCH, new HashMap<>(), credential));
     }
 
+    public boolean isSimulatingSupported() {
+        try (DatagramSocket socket = new DatagramSocket(PORT)) {
+            return !socket.isClosed();
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
     public DDPRequest simulateStandby(String hostName, Function<DDPRequest, DDPResponse> responseFunction, Predicate<DDPRequest> requestPredicate) {
         return simulate(request -> {
             if (request.getType() == MessageType.SRCH) {
@@ -103,7 +111,7 @@ public class PS4DDP {
     }
 
     public DDPRequest simulate(Function<DDPRequest, DDPResponse> responseFunction, Predicate<DDPRequest> requestPredicate) {
-        try (DatagramSocket socket = new DatagramSocket(PS4DDP.PORT)) {
+        try (DatagramSocket socket = new DatagramSocket(PORT)) {
             while (!socket.isClosed()) {
                 DatagramPacket requestPacket = new DatagramPacket(new byte[2048], 2048);
                 socket.receive(requestPacket);
@@ -126,9 +134,9 @@ public class PS4DDP {
                 String command = "sudo setcap 'cap_net_bind_service=ep' " + javaExecutable.toString();
                 message = "Run with root access or run this command: " + System.lineSeparator() + command;
             } else {
-                message = "Make sure you are allowed to open port " + PS4DDP.PORT;
+                message = "Make sure you are allowed to open port " + PORT;
             }
-            throw new IllegalStateException("Failed to bind to port " + PS4DDP.PORT + System.lineSeparator() + message, e);
+            throw new IllegalStateException("Failed to bind to port " + PORT + System.lineSeparator() + message, e);
         } catch (IOException e) {
             throw new IllegalStateException("Unknown IO error: ", e);
         }
