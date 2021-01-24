@@ -7,6 +7,7 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum Status {
 
+    UNKNOWN(-1, "Unknown"),
     OK(200, "Ok"),
     STANDBY(620, "Standby");
 

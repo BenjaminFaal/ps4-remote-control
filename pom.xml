@@ -6,7 +6,7 @@
 
     <groupId>com.github.BenjaminFaal</groupId>
     <artifactId>ps4-remote-control</artifactId>
-    <version>0.0.1</version>
+    <version>0.0.2</version>
     <description>Java library for remote controlling a PS4 with the DDP and Companion app protocols.</description>
 
     <properties>
